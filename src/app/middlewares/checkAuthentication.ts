@@ -3,8 +3,8 @@ import { verifyToken } from "../utils/jwt";
 import { NextFunction, Request, Response } from "express";
 export const checkAuthetication = (...authRoles: string[]) => async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const accessToken = req.headers.authorization;
-
+        // const accessToken = req.headers.authorization;
+        const accessToken = req.cookies.accessToken
         if (!accessToken) {
             throw new AppError("No token received");
         }

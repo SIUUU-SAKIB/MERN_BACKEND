@@ -1,10 +1,20 @@
 import z, { object } from "zod";
 import { Role } from "./user.interface";
+export const registerSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+export const googleUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  picture: z.string().optional(),
+});
 
 export const createUserZodSchema = z.object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters").optional(),
     phone: z.string().optional(),
     role: z.enum(Object.values(Role)).optional(),
     picture: z.string().url().optional(),

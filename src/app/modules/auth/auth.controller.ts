@@ -4,6 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import { authService } from "./auth.service";
 import { AppError } from "../../errors/AppError";
 import { setAuthCookies } from "../../utils/setCookies";
+import { createUserTokens } from "../../utils/userTokens";
+import { envVariables } from "../../constants/env";
 
 const credentialsLogin = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -77,5 +79,26 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
         next(error)
     }
 }
+const googleCallback = async (req: Request, res: Response, next: NextFunction) => {
 
-export const authController = { credentialsLogin, getNewAccessToken, logoutUser, resetPassword }
+    let redirectTo = req.query.state ? req.query.state as string : ""
+
+    if (redirectTo.startsWith("/")) {
+        redirectTo = redirectTo.slice(1)
+    }
+
+    // /booking => booking , => "/" => ""
+    const user = req.user;
+
+    if (!user) {
+        throw new AppError( "User Not Found", StatusCodes.NOT_FOUND)
+    }
+
+    const tokenInfo = createUserTokens(user)
+
+    setAuthCookies(res, tokenInfo)
+    res.redirect(`${envVariables.FRONTEND_PORT}/${redirectTo}`)
+}
+
+export const authController = { credentialsLogin, getNewAccessToken, logoutUser, resetPassword, googleCallback }
+

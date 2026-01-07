@@ -12,14 +12,14 @@ export interface IAuthProvider {
 }
 
 export enum IsActive {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
-  BLOCKED = "BLOCKED"
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    BLOCKED = "BLOCKED"
 }
 
 
-
 export interface Iuser {
+    _id: string,
     name: string,
     email: string,
     password: string,

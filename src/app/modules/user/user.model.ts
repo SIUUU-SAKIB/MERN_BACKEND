@@ -13,7 +13,7 @@ const userSchema = new Schema<Iuser>(
     {
         name: { type: String, required: true },
         email: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
+        password: { type: String, required: false },
         role: {
             type: String,
             enum: Object.values(Role),
@@ -34,4 +34,4 @@ const userSchema = new Schema<Iuser>(
 }
 )
 
-export const UserModel = model<Iuser>("user", userSchema)
+export const UserModel = model<Iuser>("User", userSchema)
